@@ -28,7 +28,7 @@ if (config.secure) {
   httpsServer.listen(config.port);
 }
 
-//restoreStorage();
+restoreStorage();
 
 const server = new WebSocketServer({
   server: config.secure ? httpsServer : undefined,
