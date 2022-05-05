@@ -14,7 +14,7 @@ import {
 } from '../packets/PacketHandlers';
 import PlayEmotePacket from '../packets/PlayEmotePacket';
 import getConfig from '../utils/config';
-import instanceStorage from '../utils/instanceStorage';
+import instanceStorage, { updateStorage } from '../utils/instanceStorage';
 import logger from '../utils/logger';
 
 export default class Player {
@@ -194,7 +194,6 @@ export default class Player {
     const fake = this.cosmetics.fake.find((c) => c.id === id);
     if (fake) {
       fake.equipped = state;
-      return;
     }
   }
 
@@ -249,7 +248,7 @@ export default class Player {
         this.socket.send(data.buf.buffer);
       } else this.socket.send(data);
     } catch (error) {
-      logger.error('Error writing to client:', error.message);
+      logger.error('Error writing to client:', error);
     }
   }
 
@@ -259,7 +258,7 @@ export default class Player {
         this.fakeSocket.send(data.buf.buffer);
       } else this.fakeSocket.send(data);
     } catch (error) {
-      logger.error('Error writing to server:', error.message);
+      logger.error('Error writing to server:', error);
     }
   }
 
@@ -285,6 +284,7 @@ export default class Player {
       plusColor: this.plusColor,
       premium: this.premium,
     });
+    updateStorage();
   }
 
   private restoreFromInstanceStorage(): void {

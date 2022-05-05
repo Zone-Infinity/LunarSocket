@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { Server as WebSocketServer } from 'ws';
 
 import getConfig, { getConfigSync } from './utils/config';
+import { restoreStorage } from './utils/instanceStorage';
 import logger from './utils/logger';
 import Player from './player/Player';
 import Packet from './packets/Packet';
@@ -26,6 +27,8 @@ if (config.secure) {
 
   httpsServer.listen(config.port);
 }
+
+//restoreStorage();
 
 const server = new WebSocketServer({
   server: config.secure ? httpsServer : undefined,
